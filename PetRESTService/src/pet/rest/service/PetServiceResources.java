@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -38,6 +39,17 @@ public class PetServiceResources {
 		personList.add(new Person(3, "George3", "Kasteellaan 3", "Rocky2", "Doperman2", new Date(2015, 9, 3)));
 		personList.add(new Person(4, "George4", "Kasteellaan 4", "Rocky3", "Doperman3", new Date(2015, 9, 4)));
 		personList.add(new Person(5, "George5", "Kasteellaan 5", "Rocky2", "Doperman2", new Date(2015, 9, 5)));
+	}
+	
+	public boolean remove (Person person){
+		return personList.remove(person);
+	}
+	
+	@DELETE
+	@Path("/person/delete")
+	public void deletePerson(@QueryParam("id") int id){
+		Person p = personList.get(id);
+		personList.remove(p);
 	}
 	
 	@GET

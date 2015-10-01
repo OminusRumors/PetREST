@@ -51,6 +51,15 @@ public class PetClient {
 		else {
 		   System.out.println("ERROR: Cannot get the number of students! (" +response +")");
 		}
+		methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("delete").queryParam("id", "1");
+		response = methodTarget.request().accept(MediaType.TEXT_PLAIN).delete();
+		
+		// status 204 (NO_CONTENT) -> DELETE is a success!
+		if (response.getStatus() == Response.Status.NO_CONTENT.getStatusCode()){
+		   System.out.println("DELETE successfuly completed!");
+		} else {
+		    System.out.println("DELETE failed! (" + response + ")");
+		}
 
 	}
 
