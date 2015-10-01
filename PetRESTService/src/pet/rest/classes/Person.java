@@ -12,6 +12,7 @@ public class Person {
 	public String address;
 	public Date dateLost;
 	
+	@SuppressWarnings("deprecation")
 	public Person(int id, String name, String address, String petname, String breed, Date dateLost){
 		/**this.id=id;
 		this.name=name;

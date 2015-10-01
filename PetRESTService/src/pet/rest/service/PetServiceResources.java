@@ -27,6 +27,7 @@ public class PetServiceResources {
 		populate();
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void populate(){
 		petList.add(new Pet(1, "Rocky", "Doperman", "Eindhoven"));
 		petList.add(new Pet(2, "Rocky2", "Doperman2", "Eindhoven2"));
