@@ -1,12 +1,18 @@
 package pet.rest.classes;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement 
 public class Pet {
+	@XmlElement
 	public int id;
+	@XmlElement
 	public String name;
+	@XmlElement
 	public String breed;
+	@XmlElement
 	public String area;
+	@XmlElement
 	public boolean found;
 	
 	public Pet(int id, String name, String breed, String area){

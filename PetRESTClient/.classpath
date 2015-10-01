@@ -26,5 +26,6 @@
 	<classpathentry kind="lib" path="C:/Users/George II/OneDrive/Fontys/BLOCK 13/SOT/practical/eclipse/SchoolRESTClient/lib/validation-api-1.1.0.Final.jar"/>
 	<classpathentry kind="lib" path="lib/Person.jar"/>
 	<classpathentry kind="lib" path="lib/Pet.jar"/>
+	<classpathentry kind="lib" path="C:/Users/George II/OneDrive/Fontys/BLOCK 13/SOT/practical/eclipse/PetREST/PetRESTService/WebContent/WEB-INF/lib/genson-1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,15 +1,24 @@
 package pet.rest.classes;
 import java.util.Date;
+
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
 
 @XmlRootElement 
 public class Person {
 	
+	@XmlElement
 	public int id;
+	@XmlElement
 	public String name;
+	@XmlElement
 	public String petname;
+	@XmlElement
 	public String breed;
+	@XmlElement
 	public String address;
+	@XmlElement
 	public Date dateLost;
 	
 	@SuppressWarnings("deprecation")
