@@ -41,9 +41,6 @@ public class PetServiceResources {
 		personList.add(new Person(5, "George5", "Kasteellaan 5", "Rocky2", "Doperman2", new Date(2015, 9, 5)));
 	}
 	
-	public boolean remove (Person person){
-		return personList.remove(person);
-	}
 	
 	@DELETE
 	@Path("/person/delete")
@@ -97,6 +94,19 @@ public class PetServiceResources {
 	   	} 
 	   	else {
 	   		throw new RuntimeException("Person was not found."); 
+	   	}
+	}
+	
+	@GET
+	@Path("/pet/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Pet getPet(@PathParam("id") int id){
+		Pet p = petList.get(id);
+	   	if (p != null) {
+		   	return p;
+	   	} 
+	   	else {
+	   		throw new RuntimeException("Pet was not found."); 
 	   	}
 	}
 	

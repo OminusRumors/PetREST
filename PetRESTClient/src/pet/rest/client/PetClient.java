@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import pet.rest.classes.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Form;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -33,14 +35,34 @@ public class PetClient {
 		//methodTarget = serviceTarget.path("rest").path("petservice");
 		//methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("delete").queryParam("id", "1");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("Enter person id: ");
-        try{
-            int id = Integer.parseInt(br.readLine(), 10);
-            getPerson(id);
-        }
-        catch(NumberFormatException nfe){
-            System.err.println("Invalid Format!");
-        }
+		String input = br.readLine();
+		while (input != "exit"){ //does not work on exiting the client
+			int id = -1;
+			System.out.println("Enter person id: ");
+	        try{
+	            id = Integer.parseInt(br.readLine(), 10);
+	            getPerson(id);
+	        }
+	        catch(NumberFormatException nfe){
+	            System.err.println("Invalid Format!");
+	        }
+	        System.out.println("Enter new pet name: ");
+	        String name = br.readLine();
+	        updatePet(id, name);
+	        getPerson(id);
+	        input = br.readLine();
+		}        
+	}
+	
+	private static void getPet(int id){
+		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("pet").path(String.valueOf(id));
+		Builder requestBuilder = methodTarget.request().accept(MediaType.APPLICATION_JSON);
+		Response response = requestBuilder.get();
+		
+		if (response.getStatus() == 200){
+			Pet p = response.readEntity(Pet.class);
+			System.out.println(p.toString());
+		}
 	}
 	
 	private static void getPerson(int id){
@@ -52,6 +74,21 @@ public class PetClient {
 			Person p = response.readEntity(Person.class);
 			System.out.println(p.toString());
 		}
+	}
+	
+	private static void updatePet(int id, String petname){
+		Form form = new Form();
+		form.param("id", String.valueOf(id));
+		form.param("petname", petname);
+		
+		Response response = serviceTarget.path("rest").path("petservice").request().accept(MediaType.TEXT_PLAIN)
+				.put(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED));
+		
+		if (response.getStatus() == Response.Status.CREATED.getStatusCode()){
+			System.out.println("PUT OK!");
+		}
+		else {
+			System.out.println("PUT has failed! (" + response + ")"); }
 	}
 	
 	private void deletePerson(int id){
