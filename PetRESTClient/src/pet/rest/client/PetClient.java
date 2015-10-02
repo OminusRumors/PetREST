@@ -1,7 +1,6 @@
 package pet.rest.client;
 import java.net.URI;
 import java.util.ArrayList;
-
 import pet.rest.classes.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -12,6 +11,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import org.glassfish.jersey.client.ClientConfig;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class PetClient {
 	private static WebTarget serviceTarget;
@@ -26,12 +28,30 @@ public class PetClient {
 		//methodTarget = serviceTarget.path("rest").path("petservice");
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		PetClient client = new PetClient();
 		//methodTarget = serviceTarget.path("rest").path("petservice");
 		//methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("delete").queryParam("id", "1");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter person id: ");
+        try{
+            int id = Integer.parseInt(br.readLine(), 10);
+            getPerson(id);
+        }
+        catch(NumberFormatException nfe){
+            System.err.println("Invalid Format!");
+        }
+	}
+	
+	private static void getPerson(int id){
+		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("person").path(String.valueOf(id));
+		Builder requestBuilder = methodTarget.request().accept(MediaType.APPLICATION_JSON);
+		Response response = requestBuilder.get();
 		
-
+		if (response.getStatus() == 200){
+			Person p = response.readEntity(Person.class);
+			System.out.println(p.toString());
+		}
 	}
 	
 	private void deletePerson(int id){

@@ -88,8 +88,14 @@ public class Person {
 		return address;
 	}
 	
-	public Date getDate(){
+	public Date getDateLost(){
 		return dateLost;
+	}
+	
+	//methods
+	public String toString(){
+		return "Name: " + getName() + " Address: " + getAddress() + " Date lost: " + getDateLost().getDate() +
+				"/" + getDateLost().getMonth() + "/" + getDateLost().getYear();
 	}
 
 }

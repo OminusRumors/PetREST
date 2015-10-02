@@ -69,4 +69,13 @@ public class Pet {
 	public String getArea(){
 		return area;
 	}
+	
+	public boolean getFound(){
+		return found;
+	}
+	
+	//methods
+	public String toString(){
+		return "Name: " + getName() + " Breed:" + getBreed() + " Found: " + getFound();
+	}
 }
