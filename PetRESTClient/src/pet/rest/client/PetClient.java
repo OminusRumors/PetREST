@@ -15,7 +15,7 @@ import org.glassfish.jersey.client.ClientConfig;
 
 public class PetClient {
 	private static WebTarget serviceTarget;
-	private static WebTarget methodTarget;
+	//private static WebTarget methodTarget;
 	
 	public PetClient() {
 		ClientConfig config = new ClientConfig();
@@ -28,8 +28,30 @@ public class PetClient {
 
 	public static void main(String[] args) {
 		PetClient client = new PetClient();
-		methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("all");
-					
+		//methodTarget = serviceTarget.path("rest").path("petservice");
+		//methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("delete").queryParam("id", "1");
+		
+
+	}
+	
+	private void deletePerson(int id){
+		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("delete").queryParam("id", String.valueOf(id));
+		Builder requestBuilder = methodTarget.request();
+		Response response = requestBuilder.get(); 
+		response = methodTarget.request().accept(MediaType.TEXT_PLAIN).delete();
+		
+		// status 204 (NO_CONTENT) -> DELETE is a success!
+		if (response.getStatus() == Response.Status.NO_CONTENT.getStatusCode()){
+		   System.out.println("Person " + id + " deleted succesfully.");
+		} 
+		else {
+		    System.out.println("DELETE failed! (" + response + ")");
+		}
+	}
+	
+	private void getAllPersons(){
+		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("all");
+		
 		// Build a request on http://localhost:8080/SchoolRESTService/rest/students/count.
 		Builder requestBuilder =  methodTarget.request();
 		requestBuilder= requestBuilder.accept(MediaType.APPLICATION_JSON);
@@ -40,9 +62,6 @@ public class PetClient {
 
 		if (response.getStatus() == 200) { 
 			// 200 (OK) -> GET is a success!
-			//Person p = response.readEntity(Person.class);
-			//Person i = response.readEntity(Person.class);
-			//System.out.println(i.getName() + i.getPetName());
 			ArrayList<Person> list = response.readEntity(new GenericType<ArrayList<Person>>(){});
 			for (Person person : list) {
 				System.out.println(person);
@@ -51,16 +70,6 @@ public class PetClient {
 		else {
 		   System.out.println("ERROR: Cannot get the number of students! (" +response +")");
 		}
-		methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("delete").queryParam("id", "1");
-		response = methodTarget.request().accept(MediaType.TEXT_PLAIN).delete();
-		
-		// status 204 (NO_CONTENT) -> DELETE is a success!
-		if (response.getStatus() == Response.Status.NO_CONTENT.getStatusCode()){
-		   System.out.println("DELETE successfuly completed!");
-		} else {
-		    System.out.println("DELETE failed! (" + response + ")");
-		}
-
 	}
 
 }
