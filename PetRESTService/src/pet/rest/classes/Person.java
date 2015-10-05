@@ -97,8 +97,8 @@ public class Person {
 	
 	//methods
 	public String toString(){
-		return "Name: " + getName() + " Address: " + getAddress() + " Date lost: " + getDateLost().getDate() +
-				"/" + getDateLost().getMonth() + "/" + getDateLost().getYear();
+		return "Name: " + getName() + " Address: " + getAddress(); // + " Date lost: " + getDateLost().getDate() +
+				//"/" + getDateLost().getMonth() + "/" + getDateLost().getYear();
 	}
 
 }

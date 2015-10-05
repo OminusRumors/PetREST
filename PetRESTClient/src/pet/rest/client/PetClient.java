@@ -40,36 +40,61 @@ public class PetClient {
 		String input = br.readLine();
 		while (input != "exit"){ //does not work on exiting the client
 			int id = -1;
-			System.out.println("Enter person name: ");
-			String name = br.readLine();
-			System.out.println("Enter person address: ");
-			String address = br.readLine();
-			System.out.println("Enter person's pet name: ");
-			String petname = br.readLine();
-			System.out.println("Enter pet's breed: ");
-			String breed = br.readLine();
-			System.out.println("Enter date lost: ");
-			Date dateLost = Date.parse(br.readLine());
+			System.out.println("Enter delete id: ");
+//			String name = br.readLine();
+//			System.out.println("Enter person address: ");
+//			String address = br.readLine();
+//			System.out.println("Enter person's pet name: ");
+//			String petname = br.readLine();
+//			System.out.println("Enter pet's breed: ");
+//			String breed = br.readLine();
+			//System.out.println("Enter date lost: ");
+			//Date dateLost = Date.parse(br.readLine());
+			//Person p = new Person(name, address, petname, breed);
 	        try{
 	            id = Integer.parseInt(br.readLine(), 10);
-	            getPet(id);
+	            getPerson(id);
+	        	//addPerson(p);
 	        }
 	        catch(NumberFormatException nfe){
 	            System.err.println("Invalid Format!");
 	        }
 	        //System.out.println("Enter new pet name: ");
 	        //String name = br.readLine();
-	        updatePet(id);
-	        getPet(id);
+	        //updatePet(id);
+	        //getPet(id);
 	        input = br.readLine();
 		}        
+	}
+	
+	private static void addPet(Pet pet){
+		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("pet").path("add");
+		Builder requestBuilder = methodTarget.request();
+		Response response = requestBuilder.post(Entity.entity(pet, MediaType.APPLICATION_JSON));
+		if (response.getStatus() == 204){
+			Person p = (Person) response.readEntity(Person.class);
+			System.out.println(response);
+			System.out.println(p.toString());
+		}
+		else{
+			System.out.println("Pet could not be added.");
+			System.out.println(response);			
+		}
 	}
 	
 	private static void addPerson(Person person){
 		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("add");
 		Builder requestBuilder = methodTarget.request();
 		Response response = requestBuilder.post(Entity.entity(person, MediaType.APPLICATION_JSON)); 
-		System.out.println(response);
+		if (response.getStatus() == 204){
+			Person p = (Person) response.readEntity(Person.class);
+			System.out.println(response);
+			System.out.println(p.toString());
+		}
+		else{
+			System.out.println("Person could not be added.");
+			System.out.println(response);			
+		}
 	}
 	
 	private static void getPet(int id){
@@ -79,7 +104,7 @@ public class PetClient {
 		
 		if (response.getStatus() == 200){
 			Pet p = response.readEntity(Pet.class);
-			System.out.println(p.toString());
+			System.out.println(response.getEntity());
 		}
 	}
 	
@@ -89,8 +114,13 @@ public class PetClient {
 		Response response = requestBuilder.get();
 		
 		if (response.getStatus() == 200){
-			Person p = response.readEntity(Person.class);
+			Person p = (Person) response.readEntity(Person.class);
+			System.out.println(response);
 			System.out.println(p.toString());
+		}
+		else{
+			System.out.println("Person not found.");
+			System.out.println(response);			
 		}
 	}
 	
@@ -102,7 +132,8 @@ public class PetClient {
 				.put(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED));
 		
 		if (response.getStatus() == Response.Status.NO_CONTENT.getStatusCode()){
-			System.out.println("PUT OK!");
+			System.out.println("Pet updated!");
+			System.out.println(response);
 		}
 		else {
 			System.out.println("ERROR: " + response); 
@@ -124,7 +155,7 @@ public class PetClient {
 		}
 	}
 	
-	private void deletePerson(int id){
+	private static void deletePerson(int id){
 		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("delete").queryParam("id", String.valueOf(id));
 		Builder requestBuilder = methodTarget.request();
 		Response response = requestBuilder.get(); 
@@ -139,7 +170,7 @@ public class PetClient {
 		}
 	}
 	
-	private void getAllPets(){
+	private static void getAllPets(){
 		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("pet").path("all");
 		Builder requestBuilder = methodTarget.request();
 		requestBuilder = requestBuilder.accept(MediaType.APPLICATION_JSON);
@@ -152,11 +183,11 @@ public class PetClient {
 			}
 		} 
 		else {
-		   System.out.println("ERROR: Cannot get the number of students! (" +response +")");
+		   System.out.println("ERROR: Cannot get all the pets! (" +response +")");
 		}
 	}
 	
-	private void getAllPersons(){
+	private static void getAllPersons(){
 		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("all");
 		
 		// Build a request on http://localhost:8080/SchoolRESTService/rest/students/count.
@@ -175,7 +206,7 @@ public class PetClient {
 			}
 		} 
 		else {
-		   System.out.println("ERROR: Cannot get the number of students! (" +response +")");
+		   System.out.println("ERROR: Cannot get all people! (" +response +")");
 		}
 	}
 

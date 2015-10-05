@@ -108,13 +108,13 @@ public class PetServiceResources {
 	@Path("/pet/updatefound")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public Response updatePet(@FormParam("id") int id){
-		Pet p= this.getPet(id);
-		p.setFound(true);
-		if (p.getFound() == true){
+		Pet pet = this.petList.get(id);
+		pet.setFound(true);
+		if (pet.getFound() == true){
 			return Response.noContent().build();
 		}
 		else{
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Cannot update pet " + p.toString()).build();
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Cannot update pet " + pet.toString()).build();
 		}
 	}
 	
@@ -125,42 +125,42 @@ public class PetServiceResources {
 		return personList.size();
 	}
 	
-	@GET
-	@Path("/person/name")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getPersonName(@QueryParam("id") int id) {
-		Person p = personList.get(id);
-	   	if (p != null) {
-		   	return p.getName();
-	   	} 
-	   	else {
-	   		return "Person with id "+ id + "was not found."; 
-	   	}
-	}
+//	@GET
+//	@Path("/person/name")
+//	@Produces(MediaType.TEXT_PLAIN)
+//	public String getPersonName(@QueryParam("id") int id) {
+//		Person p = personList.get(id);
+//	   	if (p != null) {
+//		   	return p.getName();
+//	   	} 
+//	   	else {
+//	   		return "Person with id "+ id + "was not found."; 
+//	   	}
+//	}
 	
 	@GET
 	@Path("/person/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Person getPerson(@PathParam("id") int id){
+	public Response getPerson(@PathParam("id") int id){
 		Person p = personList.get(id);
 	   	if (p != null) {
-		   	return p;
+		   	return Response.ok(p).build();
 	   	} 
 	   	else {
-	   		throw new RuntimeException("Person was not found."); 
+	   		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Cannot find person with id " + id).build();
 	   	}
 	}
 	
 	@GET
 	@Path("/pet/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Pet getPet(@PathParam("id") int id){
+	public Response getPet(@PathParam("id") int id){
 		Pet p = petList.get(id);
 	   	if (p != null) {
-		   	return p;
+	   		return Response.ok(p).build();
 	   	} 
 	   	else {
-	   		throw new RuntimeException("Pet was not found."); 
+	   		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Cannot find pet with id " + id).build();
 	   	}
 	}
 	
