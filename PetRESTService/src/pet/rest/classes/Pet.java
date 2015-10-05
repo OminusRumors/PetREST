@@ -16,12 +16,14 @@ public class Pet {
 	public boolean found;
 	
 	public Pet(int id, String name, String breed, String area){
-		/**this.id=id;
-		this.name=name;
-		this.breed=breed;
-		this.area=area;
-		this.found=false;*/
 		setId(id);
+		setName(name);
+		setBreed(breed);
+		setArea(area);
+		setFound(false);
+	}
+	
+	public Pet(String name, String breed, String area){
 		setName(name);
 		setBreed(breed);
 		setArea(area);
