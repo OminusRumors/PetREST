@@ -170,5 +170,12 @@ public class PetServiceResources {
 	public ArrayList<Person> getAllPerson(){
 		return personList;
 	}
+	
+	@GET
+	@Path("/pet/all")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Pet> getAllPet(){
+		return petList;
+	}
 
 }

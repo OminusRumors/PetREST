@@ -34,8 +34,6 @@ public class PetClient {
 
 	public static void main(String[] args) throws IOException {
 		PetClient client = new PetClient();
-		//methodTarget = serviceTarget.path("rest").path("petservice");
-		//methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("delete").queryParam("id", "1");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String input = br.readLine();
 		while (input != "exit"){ //does not work on exiting the client
@@ -99,58 +97,63 @@ public class PetClient {
 				System.out.println("Enter (4) to delete a pet");
 				System.out.println("Enter (5) to update a status to FOUND");
 				input = br.readLine();
+				try{
 				//get one pet
-				if (Integer.parseInt(input) == 2){
-					System.out.println("Enter pet id: ");
-					input = br.readLine();
-					try{
-			            id = Integer.parseInt(input, 10);
-			            getPet(id);
-			        }
-			        catch(NumberFormatException nfe){
-			            System.err.println("Invalid number format!");
-			        }
+					if (Integer.parseInt(input) == 2){
+						System.out.println("Enter pet id: ");
+						input = br.readLine();
+						try{
+			            	id = Integer.parseInt(input, 10);
+			            	getPet(id);
+			        	}
+			        	catch(NumberFormatException nfe){
+			            	System.err.println("Invalid number format!");
+			        	}
+					}
+					//get all pets
+					else if (Integer.parseInt(input) == 1){
+						getAllPets();
+					}
+					//add pet
+					else if (Integer.parseInt(input) == 3){
+						System.out.println("Enter pet name: ");
+						String name = br.readLine();
+						System.out.println("Enter pet breed: ");
+						String breed = br.readLine();
+						System.out.println("Enter pet's area: ");
+						String area = br.readLine();
+						Pet p = new Pet(name, breed, area);
+			        	addPet(p);
+					}
+					//delete pet
+					else if (Integer.parseInt(input) == 4){
+						System.out.println("Enter delete pet id: ");
+						try{
+							id = Integer.parseInt(br.readLine(), 10);
+			            	deletePet(id);
+			        	}
+			        	catch(NumberFormatException nfe){
+			        		System.err.println("Invalid Format!");
+			        	}
+					}
+					//update pet
+					else if (Integer.parseInt(input) == 5){
+						System.out.println("Enter update pet's id: ");
+						try{
+							id = Integer.parseInt(br.readLine(), 10);
+			            	updatePet(id);
+			            	getPet(id);
+			        	}
+			        	catch(NumberFormatException nfe){
+			            	System.err.println("Invalid Format!");
+			        	}
+					}
+					else{
+						System.out.println("Enter one of the numbers indicated.");
+					}
 				}
-				//get all pets
-				else if (Integer.parseInt(input) == 1){
-					getAllPets();
-				}
-				//add pet
-				else if (Integer.parseInt(input) == 3){
-					System.out.println("Enter pet name: ");
-					String name = br.readLine();
-					System.out.println("Enter pet breed: ");
-					String breed = br.readLine();
-					System.out.println("Enter pet's area: ");
-					String area = br.readLine();
-			        Pet p = new Pet(name, breed, area);
-			        addPet(p);
-				}
-				//delete pet
-				else if (Integer.parseInt(input) == 4){
-					System.out.println("Enter delete pet id: ");
-					try{
-			            id = Integer.parseInt(br.readLine(), 10);
-			            deletePet(id);
-			        }
-			        catch(NumberFormatException nfe){
-			            System.err.println("Invalid Format!");
-			        }
-				}
-				//update pet
-				else if (Integer.parseInt(input) == 5){
-					System.out.println("Enter update pet's id: ");
-					try{
-			            id = Integer.parseInt(br.readLine(), 10);
-			            updatePet(id);
-			            getPet(id);
-			        }
-			        catch(NumberFormatException nfe){
-			            System.err.println("Invalid Format!");
-			        }
-				}
-				else{
-					System.out.println("Enter one of the numbers indicated.");
+				catch(NumberFormatException nfe){
+					
 				}
 			}
 			//not pet nor person
@@ -166,9 +169,9 @@ public class PetClient {
 		Builder requestBuilder = methodTarget.request();
 		Response response = requestBuilder.post(Entity.entity(pet, MediaType.APPLICATION_JSON));
 		if (response.getStatus() == 204){
-			Person p = (Person) response.readEntity(Person.class);
+			Pet p = (Pet) response.readEntity(Pet.class);
 			System.out.println(response);
-			System.out.println(p.toString());
+			System.out.println("New pet added.");
 		}
 		else{
 			System.out.println("Pet could not be added.");
@@ -246,7 +249,7 @@ public class PetClient {
 		response = methodTarget.request().accept(MediaType.TEXT_PLAIN).delete();
 		
 		// status 204 (NO_CONTENT) -> DELETE is a success!
-		if (response.getStatus() == Response.Status.NO_CONTENT.getStatusCode()){
+		if (response.getStatus() == 200){
 		   System.out.println("Pet " + id + " deleted succesfully.");
 		} 
 		else {
