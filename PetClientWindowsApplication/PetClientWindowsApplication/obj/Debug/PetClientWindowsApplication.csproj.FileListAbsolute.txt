@@ -1,0 +1,9 @@
+C:\Users\George II\OneDrive\Fontys\BLOCK 13\SOT\practical\eclipse\PetREST\PetClientWindowsApplication\PetClientWindowsApplication\bin\Debug\PetClientWindowsApplication.exe.config
+C:\Users\George II\OneDrive\Fontys\BLOCK 13\SOT\practical\eclipse\PetREST\PetClientWindowsApplication\PetClientWindowsApplication\obj\Debug\PetClientWindowsApplication.csprojResolveAssemblyReference.cache
+C:\Users\George II\OneDrive\Fontys\BLOCK 13\SOT\practical\eclipse\PetREST\PetClientWindowsApplication\PetClientWindowsApplication\obj\Debug\PetClientWindowsApplication.Form1.resources
+C:\Users\George II\OneDrive\Fontys\BLOCK 13\SOT\practical\eclipse\PetREST\PetClientWindowsApplication\PetClientWindowsApplication\obj\Debug\PetClientWindowsApplication.Properties.Resources.resources
+C:\Users\George II\OneDrive\Fontys\BLOCK 13\SOT\practical\eclipse\PetREST\PetClientWindowsApplication\PetClientWindowsApplication\obj\Debug\PetClientWindowsApplication.csproj.GenerateResource.Cache
+C:\Users\George II\OneDrive\Fontys\BLOCK 13\SOT\practical\eclipse\PetREST\PetClientWindowsApplication\PetClientWindowsApplication\bin\Debug\PetClientWindowsApplication.exe
+C:\Users\George II\OneDrive\Fontys\BLOCK 13\SOT\practical\eclipse\PetREST\PetClientWindowsApplication\PetClientWindowsApplication\bin\Debug\PetClientWindowsApplication.pdb
+C:\Users\George II\OneDrive\Fontys\BLOCK 13\SOT\practical\eclipse\PetREST\PetClientWindowsApplication\PetClientWindowsApplication\obj\Debug\PetClientWindowsApplication.exe
+C:\Users\George II\OneDrive\Fontys\BLOCK 13\SOT\practical\eclipse\PetREST\PetClientWindowsApplication\PetClientWindowsApplication\obj\Debug\PetClientWindowsApplication.pdb

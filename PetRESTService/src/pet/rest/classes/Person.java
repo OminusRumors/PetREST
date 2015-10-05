@@ -22,19 +22,22 @@ public class Person {
 	public Date dateLost;
 	
 	@SuppressWarnings("deprecation")
-	public Person(int id, String name, String address, String petname, String breed, Date dateLost){
-		/**this.id=id;
-		this.name=name;
-		this.petname=petname;
-		this.breed=breed;
-		this.address=address;
-		this.dateLost=dateLost;*/
+	public Person(int id, String name, String address, String petname, String breed){
 		setId(id);
 		setName(name);
 		setPetName(petname);
 		setBreed(breed);
 		setAddress(address);
-		setDateLost(dateLost.getDay(), dateLost.getMonth(), dateLost.getYear());
+		//setDateLost(dateLost.getDay(), dateLost.getMonth(), dateLost.getYear());
+	}
+	
+	@SuppressWarnings("deprecation")
+	public Person(String name, String address, String petname, String breed){
+		setName(name);
+		setPetName(petname);
+		setBreed(breed);
+		setAddress(address);
+		//setDateLost(dateLost.getDay(), dateLost.getMonth(), dateLost.getYear());
 	}
 	
 	public Person(){

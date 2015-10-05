@@ -1,6 +1,8 @@
 package pet.rest.client;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
+
 import pet.rest.classes.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -38,20 +40,36 @@ public class PetClient {
 		String input = br.readLine();
 		while (input != "exit"){ //does not work on exiting the client
 			int id = -1;
-			System.out.println("Enter person id: ");
+			System.out.println("Enter person name: ");
+			String name = br.readLine();
+			System.out.println("Enter person address: ");
+			String address = br.readLine();
+			System.out.println("Enter person's pet name: ");
+			String petname = br.readLine();
+			System.out.println("Enter pet's breed: ");
+			String breed = br.readLine();
+			System.out.println("Enter date lost: ");
+			Date dateLost = Date.parse(br.readLine());
 	        try{
 	            id = Integer.parseInt(br.readLine(), 10);
-	            getPerson(id);
+	            getPet(id);
 	        }
 	        catch(NumberFormatException nfe){
 	            System.err.println("Invalid Format!");
 	        }
-	        System.out.println("Enter new pet name: ");
-	        String name = br.readLine();
-	        updatePet(id, name);
-	        getPerson(id);
+	        //System.out.println("Enter new pet name: ");
+	        //String name = br.readLine();
+	        updatePet(id);
+	        getPet(id);
 	        input = br.readLine();
 		}        
+	}
+	
+	private static void addPerson(Person person){
+		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("person").path("add");
+		Builder requestBuilder = methodTarget.request();
+		Response response = requestBuilder.post(Entity.entity(person, MediaType.APPLICATION_JSON)); 
+		System.out.println(response);
 	}
 	
 	private static void getPet(int id){
@@ -76,19 +94,34 @@ public class PetClient {
 		}
 	}
 	
-	private static void updatePet(int id, String petname){
+	private static void updatePet(int id){
 		Form form = new Form();
 		form.param("id", String.valueOf(id));
-		form.param("petname", petname);
 		
-		Response response = serviceTarget.path("rest").path("petservice").request().accept(MediaType.TEXT_PLAIN)
+		Response response = serviceTarget.path("rest").path("petservice").path("pet").path("updatefound").request().accept(MediaType.TEXT_PLAIN)
 				.put(Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED));
 		
-		if (response.getStatus() == Response.Status.CREATED.getStatusCode()){
+		if (response.getStatus() == Response.Status.NO_CONTENT.getStatusCode()){
 			System.out.println("PUT OK!");
 		}
 		else {
-			System.out.println("PUT has failed! (" + response + ")"); }
+			System.out.println("ERROR: " + response); 
+		}
+	}
+	
+	private void deletePet(int id){
+		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("pet").path("delete").queryParam("id", String.valueOf(id));
+		Builder requestBuilder = methodTarget.request();
+		Response response = requestBuilder.get(); 
+		response = methodTarget.request().accept(MediaType.TEXT_PLAIN).delete();
+		
+		// status 204 (NO_CONTENT) -> DELETE is a success!
+		if (response.getStatus() == Response.Status.NO_CONTENT.getStatusCode()){
+		   System.out.println("Pet " + id + " deleted succesfully.");
+		} 
+		else {
+		    System.out.println("DELETE failed! (" + response + ")");
+		}
 	}
 	
 	private void deletePerson(int id){
@@ -103,6 +136,23 @@ public class PetClient {
 		} 
 		else {
 		    System.out.println("DELETE failed! (" + response + ")");
+		}
+	}
+	
+	private void getAllPets(){
+		WebTarget methodTarget = serviceTarget.path("rest").path("petservice").path("pet").path("all");
+		Builder requestBuilder = methodTarget.request();
+		requestBuilder = requestBuilder.accept(MediaType.APPLICATION_JSON);
+		Response response = requestBuilder.get();
+		if (response.getStatus() == 200) { 
+			// 200 (OK) -> GET is a success!
+			ArrayList<Pet> list = response.readEntity(new GenericType<ArrayList<Pet>>(){});
+			for (Pet pet : list) {
+				System.out.println(pet.toString());
+			}
+		} 
+		else {
+		   System.out.println("ERROR: Cannot get the number of students! (" +response +")");
 		}
 	}
 	
